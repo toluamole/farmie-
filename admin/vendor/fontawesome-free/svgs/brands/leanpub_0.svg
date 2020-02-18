@@ -1,0 +1,45 @@
+ম\ চতুর্থাংশ", "দ্বিতীয়\ চতুর্থাংশ", "তৃতীয়\ চতুর্থাংশ", "চতুর্থ\ চতুর্থাংশ" ];
+    sub quarter_format_wide { return $quarter_format_wide }
+}
+
+sub quarter_stand_alone_abbreviated { $_[0]->quarter_format_abbreviated() }
+
+{
+    my $quarter_stand_alone_narrow = [ "১", "২", "৩", "৪" ];
+    sub quarter_stand_alone_narrow { return $quarter_stand_alone_narrow }
+}
+
+sub quarter_stand_alone_wide { $_[0]->quarter_format_wide() }
+
+{
+    my $time_format_full = "h\:mm\:ss\ a\ zzzz";
+    sub time_format_full { return $time_format_full }
+}
+
+{
+    my $time_format_long = "h\:mm\:ss\ a\ z";
+    sub time_format_long { return $time_format_long }
+}
+
+{
+    my $time_format_medium = "h\:mm\:ss\ a";
+    sub time_format_medium { return $time_format_medium }
+}
+
+{
+    my $time_format_short = "h\:mm\ a";
+    sub time_format_short { return $time_format_short }
+}
+
+{
+    my $_format_for_EEEd = "d\ EEE";
+    sub _format_for_EEEd { return $_format_for_EEEd }
+}
+
+{
+    my $_format_for_Hm = "HH\:mm";
+    sub _format_for_Hm { return $_format_for_Hm }
+}
+
+{
+    my

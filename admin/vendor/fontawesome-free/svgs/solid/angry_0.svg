@@ -1,0 +1,27 @@
+r development versions of the INIs with respect to PHP's default behavior.
+; Please see the actual settings later in the document for more details as to why
+; we recommend these changes in PHP's behavior.
+
+; display_errors
+;   Default Value: On
+;   Development Value: On
+;   Production Value: Off
+
+; display_startup_errors
+;   Default Value: Off
+;   Development Value: On
+;   Production Value: Off
+
+; error_reporting
+;   Default Value: E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
+;   Development Value: E_ALL
+;   Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
+
+; log_errors
+;   Default Value: Off
+;   Development Value: On
+;   Production Value: On
+
+; max_input_time
+;   Default Value: -1 (Unlimited)
+;   Development Value: 60 (60 seco

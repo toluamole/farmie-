@@ -1,0 +1,60 @@
+= "HH\:mm\:ss\ z";
+    sub time_format_long { return $time_format_long }
+}
+
+{
+    my $time_format_medium = "HH\:mm\:ss";
+    sub time_format_medium { return $time_format_medium }
+}
+
+{
+    my $time_format_short = "HH\:mm";
+    sub time_format_short { return $time_format_short }
+}
+
+{
+    my $_format_for_HHmm = "HH\:mm";
+    sub _format_for_HHmm { return $_format_for_HHmm }
+}
+
+{
+    my $_format_for_HHmmss = "HH\:mm\:ss";
+    sub _format_for_HHmmss { return $_format_for_HHmmss }
+}
+
+{
+    my $_format_for_MMMdd = "MMM\-dd";
+    sub _format_for_MMMdd { return $_format_for_MMMdd }
+}
+
+{
+    my $_format_for_MMdd = "MM\.dd";
+    sub _format_for_MMdd { return $_format_for_MMdd }
+}
+
+{
+    my $_format_for_hhmm = "hh\:mm\ a";
+    sub _format_for_hhmm { return $_format_for_hhmm }
+}
+
+{
+    my $_format_for_hhmmss = "hh\:mm\:ss\ a";
+    sub _format_for_hhmmss { return $_format_for_hhmmss }
+}
+
+{
+    my $_format_for_yyQ = "Q\ yy";
+    sub _format_for_yyQ { return $_format_for_yyQ }
+}
+
+{
+    my $_format_for_yyyyMM = "yyyy\.MM";
+    sub _format_for_yyyyMM { return $_format_for_yyyyMM }
+}
+
+{
+    my $_available_formats =
+        {
+          "HHmm" => "HH\:mm",
+          "HHmmss" => "HH\:mm\:ss",
+          "MMMdd" =>

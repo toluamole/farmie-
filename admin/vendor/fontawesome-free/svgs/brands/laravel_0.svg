@@ -1,0 +1,28 @@
+
+an array reference, while in list context it returns an array.
+
+=head2 DateTime::TimeZone->countries()
+
+Returns a sorted list of all the valid country codes (in lower-case)
+which can be passed to C<names_in_country()>. In scalar context, it
+returns an array reference, while in list context it returns an array.
+
+If you need to convert country codes to names or vice versa you can
+use C<Locale::Country> to do so.
+
+=head2 DateTime::TimeZone->names_in_country( $country_code )
+
+Given a two-letter ISO3166 country code, this method returns a list of
+time zones used in that country. The country code may be of any
+case. In scalar context, it returns an array reference, while in list
+context it returns an array.
+
+This list is returned in an order vaguely based on geography and
+population. In general, the least used zones come last, but there are not
+guarantees of a specific order from one release to the next. This order is
+probably the best option for presenting zones names to end users.
+
+=head2 DateTime::TimeZone->offset_as_seconds( $offset )
+
+Given an offset as a string, this returns the number of seconds
+represe

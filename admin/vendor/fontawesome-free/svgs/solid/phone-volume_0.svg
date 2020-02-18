@@ -1,0 +1,44 @@
+$change = DateTime::TimeZone::OlsonDB::Change->new(
+                type                 => 'rule',
+                utc_start_datetime   => $dt,
+                local_start_datetime => $dt + DateTime::Duration->new(
+                    seconds => $self->total_offset + $rule->offset_from_std
+                ),
+                short_name => sprintf( $self->{format}, $rule->letter ),
+                observance => $self,
+                rule       => $rule,
+            );
+
+            if ($DateTime::TimeZone::OlsonDB::DEBUG) {
+                print "Adding rule change ...\n";
+
+                $change->_debug_output;
+            }
+
+            $zone->add_change($change);
+        }
+    }
+}
+
+sub _sorted_rules_for_year {
+    my $self = shift;
+    my $year = shift;
+
+    return (
+        map      { $_->[0] }
+            sort { $a->[1] <=> $b->[1] }
+            map {
+            my $dt = $_->utc_start_datetime_for_year( $year,
+                $self->offset_from_utc, 0 );
+            [ $_, $dt ]
+            }
+            grep {
+            $_->min_year <= $year
+                && ( ( !$_->max_year ) || $_->max_year >= $year )
+            } $self->rules
+    );
+}
+
+sub until {
+    my $self = shift;
+    my $offset_from_std = shift || $self->

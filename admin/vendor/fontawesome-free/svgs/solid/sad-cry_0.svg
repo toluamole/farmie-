@@ -1,0 +1,24 @@
+on ) = ( '', '' );
+                if ($desc =~ m/^ ( [^\\\#]* (?: \\. [^\\\#]* )* )
+                       \# \s* (SKIP|TODO) \b \s* (.*) $/ix
+                  )
+                {
+                    ( $desc, $dir, $explanation ) = ( $1, $2, $3 );
+                }
+                return $self->_make_test_token(
+                    $line, $ok, $num, $desc,
+                    $dir,  $explanation
+                );
+            },
+        },
+        comment => {
+            syntax  => qr/^#(.*)/,
+            handler => sub {
+                my ( $self, $line ) = @_;
+                my $comment = $1;
+                return $self->_make_comment_token( $line, $comment );
+            },
+        },
+        bailout => {
+            syntax  => qr/^\s*Bail out!\s*(.*)/,
+  

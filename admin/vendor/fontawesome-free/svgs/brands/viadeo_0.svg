@@ -1,0 +1,39 @@
+at_wide }
+}
+
+sub quarter_stand_alone_abbreviated { $_[0]->quarter_format_abbreviated() }
+
+{
+    my $quarter_stand_alone_narrow = [ "१", "२", "३", "४" ];
+    sub quarter_stand_alone_narrow { return $quarter_stand_alone_narrow }
+}
+
+sub quarter_stand_alone_wide { $_[0]->quarter_format_wide() }
+
+{
+    my $time_format_full = "HH\:mm\:ss\ zzzz";
+    sub time_format_full { return $time_format_full }
+}
+
+{
+    my $time_format_long = "HH\:mm\:ss\ z";
+    sub time_format_long { return $time_format_long }
+}
+
+{
+    my $time_format_medium = "HH\:mm\:ss";
+    sub time_format_medium { return $time_format_medium }
+}
+
+{
+    my $time_format_short = "HH\:mm";
+    sub time_format_short { return $time_format_short }
+}
+
+{
+    my $_format_for_yyQ = "Q\ yy";
+    sub _format_for_yyQ { return $_format_for_yyQ }
+}
+
+{
+    my $

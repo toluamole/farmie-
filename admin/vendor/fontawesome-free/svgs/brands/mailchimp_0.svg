@@ -1,0 +1,123 @@
+package DateTime::Locale::Base;
+
+use strict;
+use warnings;
+
+use Carp qw( carp );
+use DateTime::Locale;
+use List::MoreUtils ();
+use Params::Validate qw( validate_pos );
+
+BEGIN {
+    foreach my $field (
+        qw( id en_complete_name native_complete_name
+        en_language en_script en_territory en_variant
+        native_language native_script native_territory native_variant
+        )
+        ) {
+
+        # remove leading 'en_' for method name
+        ( my $meth_name = $field ) =~ s/^en_//;
+
+        # also remove 'complete_'
+        $meth_name =~ s/complete_//;
+
+        no strict 'refs';
+        *{$meth_name} = sub { $_[0]->{$field} };
+    }
+}
+
+sub new {
+    my $class = shift;
+
+    # By making the default format lengths part of the object's hash
+    # key, it allows them to be settable.
+    return bless {
+        @_,
+        default_date_format_length => $class->_default_date_format_length(),
+        default_time_format_length => $class->_default_time_format_length(),
+    }, $class;
+}
+
+sub language_id  { ( DateTime::Locale::_parse_id( $_[0]->id ) )[0] }
+sub script_id    { ( DateTime::Locale::_parse_id( $_[0]->id ) )[1] }
+sub territory_id { ( DateTime::Locale::_parse_id( $_[0]->id ) )[2] }
+sub variant_id   { ( DateTime::Locale::_parse_id( $_[0]->id ) )[3] }
+
+my @FormatLengths = qw( short medium long full );
+
+sub date_format_default {
+    my $meth = 'date_format_' . $_[0]->default_date_format_length();
+    $_[0]->$meth();
+}
+
+sub date_formats {
+    return {
+        map {
+            my $meth = 'date_format_' . $_;
+            $_ => $_[0]->$meth()
+            } @FormatLengths
+    };
+}
+
+sub time_format_default {
+    my $meth = 'time_format_' . $_[0]->default_time_format_length();
+    $_[0]->$meth();
+}
+
+sub time_formats {
+    return {
+        map {
+            my $meth = 'time_format_' . $_;
+            $_ => $_[0]->$meth()
+            } @FormatLengths
+    };
+}
+
+sub format_for {
+    my $self = shift;
+    my $for  = shift;
+
+    my $meth = '_format_for_' . $for;
+
+    return unless $self->can($meth);
+
+    return $self->$meth();
+}
+
+sub available_formats {
+    my $self = shift;
+
+    # The various parens seem to be necessary to force uniq() to see
+    # the caller's list context. Go figure.
+    my @uniq
+        = List::MoreUtils::uniq(
+        map { keys %{ $_->_available_formats() || {} } }
+            _self_and_super_path( ref $self ) );
+
+    # Doing the sort in the same expression doesn't work under 5.6.x.
+    return sort @uniq;
+}
+
+# Copied wholesale from Class::ISA, because said module warns as deprecated
+# with perl 5.11.0+, which is kind of annoying.
+sub _self_and_super_path {
+  # Assumption: searching is depth-first.
+  # Assumption: '' (empty string) can't be a class package name.
+  # Note: 'UNIVERSAL' is not given any special treatment.
+  return () unless @_;
+
+  my @out = ();
+
+  my @in_stack = ($_[0]);
+  my %seen = ($_[0] => 1);
+
+  my $current;
+  while(@in_stack) {
+    next unless defined($current = shift @in_stack) && length($current);
+    push @out, $current;
+    no strict 'refs';
+    unshift @in_stack,
+      map
+        { my $c = $_; # copy, to avoid being destructive
+          sub

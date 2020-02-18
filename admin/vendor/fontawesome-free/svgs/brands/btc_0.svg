@@ -1,0 +1,30 @@
+<commands version="1.0">
+ <list-channels>
+  <summary>List Available Channels</summary>
+  <function>doList</function>
+  <shortcut>lc</shortcut>
+  <options />
+  <doc>
+List all available channels for installation.
+</doc>
+ </list-channels>
+ <update-channels>
+  <summary>Update the Channel List</summary>
+  <function>doUpdateAll</function>
+  <shortcut>uc</shortcut>
+  <options />
+  <doc>
+List all installed packages in all channels.
+</doc>
+ </update-channels>
+ <channel-delete>
+  <summary>Remove a Channel From the List</summary>
+  <function>doDelete</function>
+  <shortcut>cde</shortcut>
+  <options />
+  <doc>&lt;channel name&gt;
+Delete a channel from the registry.  You may not
+remove any channel that has installed packages.
+</doc>
+ </channel-delete>
+ <channel

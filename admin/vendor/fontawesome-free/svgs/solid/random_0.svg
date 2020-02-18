@@ -1,0 +1,35 @@
+ipt );
+
+May be called as a class method
+
+=cut
+
+{
+
+    # Global shebang cache.
+    my %shebang_for;
+
+    sub _read_shebang {
+        my ( $class, $file ) = @_;
+        open my $fh, '<', $file or die "Can't read $file: $!\n";
+
+        # Might be a binary file - so read a fixed number of bytes.
+        my $got = read $fh, my $buf, BLK_SIZE;
+        defined $got or die "I/O error: $!\n";
+        return $1 if $buf =~ /(.*)/;
+        return;
+    }
+
+    sub shebang {
+        my ( $class, $file ) = @_;
+        $shebang_for{$file} = $class->_read_shebang($file)
+          unless exists $shebang_for{$file};
+        return $shebang_for{$file};
+    }
+}
+
+=head3 C<config_for>
+
+  my $config = $source->config_for( $class );
+
+Returns L</config> for the $class 

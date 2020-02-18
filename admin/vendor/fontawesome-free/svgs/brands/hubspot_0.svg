@@ -1,0 +1,44 @@
+use 5.006;
+use strict;
+use warnings;
+
+package CPAN::Mini;
+{
+  $CPAN::Mini::VERSION = '1.111011';
+}
+
+# ABSTRACT: create a minimal mirror of CPAN
+
+## no critic RequireCarping
+
+
+use Carp ();
+
+use File::Basename ();
+use File::Copy     ();
+use File::HomeDir 0.57 ();  # Win32 support
+use File::Find ();
+use File::Path 2.04 ();     # new API, bugfixes
+use File::Spec ();
+use File::Temp ();
+
+use URI 1            ();
+use LWP::UserAgent 5 ();
+
+use Compress::Zlib 1.20 ();
+
+
+sub update_mirror {
+  my $self = shift;
+  $self = $self->new(@_) unless ref $self;
+
+  unless ($self->{offline}) {
+    $self->log("Updating $self->{local}");
+    $self->log("Mirroring from $self->{remote}");
+    $self->log("=" x 63);
+
+    # mirrored tracks the already done, keyed by filename
+    # 1 = local-checked, 2 = remote-mirrored
+    $self->mirror_indices;
+
+ 

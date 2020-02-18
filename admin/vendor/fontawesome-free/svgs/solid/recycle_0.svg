@@ -1,0 +1,48 @@
+package TAP::Parser::SourceHandler;
+
+use strict;
+use vars qw($VERSION @ISA);
+
+use TAP::Object           ();
+use TAP::Parser::Iterator ();
+
+@ISA = qw(TAP::Object);
+
+=head1 NAME
+
+TAP::Parser::SourceHandler - Base class for different TAP source handlers
+
+=head1 VERSION
+
+Version 3.26
+
+=cut
+
+$VERSION = '3.26';
+
+=head1 SYNOPSIS
+
+  # abstract class - don't use directly!
+  # see TAP::Parser::IteratorFactory for general usage
+
+  # must be sub-classed for use
+  package MySourceHandler;
+  use base qw( TAP::Parser::SourceHandler );
+  sub can_handle    { return $confidence_level }
+  sub make_iterator { return $iterator }
+
+  # see example below for more details
+
+=head1 DESCRIPTION
+
+This is an abstract base class for L<TAP::Parser::Source> handlers / handlers.
+
+A C<TAP::Parser::SourceHandler> does whatever is necessary to produce & capture
+a stream of TAP from the I<raw> source, and package it up in a
+L<TAP::Parser::Iterator> for the parser to consume.
+
+C<SourceHandlers> must implement the I<source detection & handling> interface
+used by L<TAP::Parser::IteratorFactory>.  At 2 methods, the interface is pretty
+simple: L</can_handle> and L</make_source>.
+
+Unless you're writing a new L<TAP::Parser::SourceHandl

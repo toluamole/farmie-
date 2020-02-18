@@ -1,0 +1,46 @@
+
+{
+    my $quarter_stand_alone_narrow = [ "1", "2", "3", "4" ];
+    sub quarter_stand_alone_narrow { return $quarter_stand_alone_narrow }
+}
+
+sub quarter_stand_alone_wide { $_[0]->quarter_format_wide() }
+
+{
+    my $time_format_full = "zzzzah时mm分ss秒";
+    sub time_format_full { return $time_format_full }
+}
+
+{
+    my $time_format_long = "zah时mm分ss秒";
+    sub time_format_long { return $time_format_long }
+}
+
+{
+    my $time_format_medium = "ahh\:mm\:ss";
+    sub time_format_medium { return $time_format_medium }
+}
+
+{
+    my $time_format_short = "ah\:mm";
+    sub time_format_short { return $time_format_short }
+}
+
+{
+    my $_format_for_Ed = "d日E";
+    sub _format_for_Ed { return $_format_for_Ed }
+}
+
+{
+    my $_format_for_H = "H时";
+    sub _format_for_H { return $_format_for_H }
+}
+
+{
+    my $_format_for_HHmmss = "HH\:mm\:ss";
+    sub _format_for_HHmmss { return $_format_for_HHmmss }
+}
+
+{
+    my $_format_for_Hm = "H\:mm";
+    sub

@@ -1,0 +1,32 @@
+f.sample').  If
+you don't want to use the 'make install' method... just copy the
+file 'webalizer' to someplace useful, and you are ready to go :)
+
+
+Usage
+-----
+
+When run, The Webalizer will read the specified log file and
+produce HTML output in the directory specified (or current
+directory if none).  You may specify various configuration
+options either on the command line or in a configuration file.
+The format of the command line is:
+
+webalizer [options] [log_file]
+
+Where 'options' may be any of the valid command line options
+described in the README file.  If a log filename is not given,
+input is taken from stdin.  A typical command line might look
+something similar to:
+
+webalizer /var/lib/httpd/logs/access_log
+
+This will produce output in the current directory based on the
+logfile /var/lib/httpd/logs/access_log.  Another example:
+
+webalizer -c somehost.conf
+
+This will read the configuration file somehost.conf, which
+should specify, among other things, the log filename and
+output directory to use.  You can use 'webalizer -h' to get
+a list of availab

@@ -1,0 +1,46 @@
+less ($dbh) {
+    $self->{error_msg} = q{No db handle available};
+    return;
+  }
+  my $info = $self->{info};
+  my $cdbi = $self->{cdbi};
+  my $data = $setup ? $info : $self->{insert};
+  unless (has_hash_data($data)) {
+    $self->{info_msg} = q{No author data to insert};
+    return;
+  }
+  my $auth_ids = $self->{ids};
+  my @fields = qw(cpanid email fullname);
+  my $sth = $cdbi->sth_insert(\@fields) or do {
+    $self->{error_msg} = $cdbi->{error_msg};
+    return;
+  };
+  foreach my $cpanid (keys %$data) {
+    my $values = $info->{$cpanid};
+    next unless ($values and $cpanid);
+    print_debug("Inserting author $cpanid\n");
+    $sth->execute($cpanid, $values->{email}, $values->{fullname})
+      or do {
+        $cdbi->db_error($sth);
+        $self->{error_msg} = $cdbi->{error_msg};
+        return;
+      };
+    $auth_ids->{$cpanid} = 
+      $dbh->func('last_insert_rowid') or do {
+        $cdbi->db_error($sth);
+        $self->{error_msg} = $cdbi->{error_msg};
+        return;
+      };
+  }
+  $sth->finish();
+  undef $sth;
+  $dbh->commit() or do {
+    $cdbi->db_error();
+    $self->{error_msg} = $cdbi->{error_msg};
+    return;
+  };
+  return 1;
+}
+
+sub update {
+  my $self = sh

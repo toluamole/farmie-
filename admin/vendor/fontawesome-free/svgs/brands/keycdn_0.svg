@@ -1,0 +1,46 @@
+ event happens at the same I<local> time, regardless of where it
+occurs.  See RFC 2445 for more details.
+
+If the "name" parameter is "UTC", then a C<DateTime::TimeZone::UTC>
+object is returned.
+
+If the "name" is an offset string, it is converted to a number, and a
+C<DateTime::TimeZone::OffsetOnly> object is returned.
+
+=head3 The "local" time zone
+
+If the "name" parameter is "local", then the module attempts to
+determine the local time zone for the system.
+
+The method for finding the local zone varies by operating system. See
+the appropriate module for details of how we check for the local time
+zone.
+
+=over 4
+
+=item * L<DateTime::TimeZone::Local::Unix>
+
+=item * L<DateTime::TimeZone::Local::Win32>
+
+=item * L<DateTime::TimeZone::Local::VMS>
+
+=back
+
+If a local time zone is not found, then an exception will be thrown.
+
+=head2 $tz->offset_for_datetime( $dt )
+
+Given a C<DateTime> object, this method returns the offset in seconds
+for the given datetime.  This takes into account historical time zone
+information, as well as Daylight Saving Time.  The offset is
+determined by looking at the object's UTC Rata Die days and seconds.
+
+=head2 $tz->offset_for_local_datetime( $dt )
+
+Given a C<DateTime> object, this method returns the offset in seconds
+for the given datetime.  Unlike the previous method, this method uses
+the local time's Rata Die days and seconds.  This should only be done
+when the corresponding UTC time is not yet known, because local times
+can be ambiguous due to Daylight Saving Time rules.
+
+=he

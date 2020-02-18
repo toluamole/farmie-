@@ -1,0 +1,37 @@
+{
+    my $_format_for_MMdd = "dd\/MM";
+    sub _format_for_MMdd { return $_format_for_MMdd }
+}
+
+{
+    my $_format_for_mmss = "mm\:ss";
+    sub _format_for_mmss { return $_format_for_mmss }
+}
+
+{
+    my $_format_for_yyQ = "Q\ yy";
+    sub _format_for_yyQ { return $_format_for_yyQ }
+}
+
+{
+    my $_format_for_yyyyMM = "MM\/yyyy";
+    sub _format_for_yyyyMM { return $_format_for_yyyyMM }
+}
+
+{
+    my $_format_for_yyyyMMMM = "MMMM\ y";
+    sub _format_for_yyyyMMMM { return $_format_for_yyyyMMMM }
+}
+
+{
+    my $_available_formats =
+        {
+          "HHmm" => "HH\:mm",
+          "MMMMd" => "d\ MMMM",
+          "MMdd" => "dd\/MM",
+          "mmss" => "mm\:ss",
+          "yyQ" => "Q\ yy",
+          "yyyyMM" => "MM\/yyyy",
+          "yyyyMMMM" => "MMMM\ y"
+        };
+    sub _available_formats { return $

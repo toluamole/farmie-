@@ -1,0 +1,31 @@
+           && UNIVERSAL::can( $dclass, 'make_iterator' );
+        push @errors,
+          "handler '$dclass' does not implement can_handle & make_iterator";
+    }
+
+    $self->_croak(
+        "Cannot load handler '$handler': " . join( "\n", @errors ) );
+}
+
+##############################################################################
+
+=head3 C<make_iterator>
+
+  my $iterator = $src_factory->make_iterator( $source );
+
+Given a L<TAP::Parser::Source>, finds the most suitable L<TAP::Parser::SourceHandler>
+to use to create a L<TAP::Parser::Iterator> (see L</detect_source>).  Dies on error.
+
+=cut
+
+sub make_iterator {
+    my ( $self, $source ) = @_;
+
+    $self->_croak('no raw source defined!') unless defined $source->raw;
+
+    $source->config( $self->config )->assemble_meta;
+
+    # is the raw source already an object?
+    return $source->raw
+      if ( $source->meta->{is_object}
+    

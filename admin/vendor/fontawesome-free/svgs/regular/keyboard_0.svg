@@ -1,0 +1,38 @@
+ilable at the time.
+      Additional/updated language files can be found at:
+      ftp://ftp.webalizer.org/pub/webalizer/lang where I will
+      put them as I receive them.
+
+
+Common Questions
+----------------
+
+Q: Will it run on [some platform]
+A: If it is a *nix platform, it should without a problem.  If it's
+   something different, probably not and your on your own if you
+   want to try to make it work.
+
+Q: When I compile, I get "file not found" errors?
+A: Most likely, the compiler cant find the header files for one
+   the required libraries.  If they are someplace other than the
+   standard locations (ie: /usr/include), then you  probably need
+   to specify an alternate location to look using one of the
+   --with-<package> command line switches when you run configure,
+   or edit the Makefile and specify the location with an '-I<path>'
+   compiler flag.
+
+Q: I get "libgd not found' errors?
+A: You don't have the GD graphics located in a standard library
+   path, or you don't have the GD graphics library at all.  If
+   the later, go to http://www.boutell.com/gd/ and grab a copy.
+   If you do have it, add a -L switch in the Makefile to point
+   to the proper location.
+
+Q: I get unresolved symbol errors when compiling, why?
+A: This most often occurs when the GD library was built with
+   additional support for such things as TrueType fonts or
+   X11 graphics.  The configure script for The Webalizer only
+   checks that the gd library is available, and does not check
+   any other dependencies it may have.  Typically, to fix this
+   problem, you need to edit the Makefile and add the dependent
+   libraries to a compiler switch (or pass them on the

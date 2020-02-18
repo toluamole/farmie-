@@ -1,0 +1,77 @@
+sub _format_for_MMdd { return $_format_for_MMdd }
+}
+
+{
+    my $_format_for_yyQ = "Q\ yy";
+    sub _format_for_yyQ { return $_format_for_yyQ }
+}
+
+{
+    my $_format_for_yyyyMM = "MM\.yyyy";
+    sub _format_for_yyyyMM { return $_format_for_yyyyMM }
+}
+
+{
+    my $_format_for_yyyyMMMM = "MMMM\ y\ \'ж\'\.";
+    sub _format_for_yyyyMMMM { return $_format_for_yyyyMMMM }
+}
+
+{
+    my $_available_formats =
+        {
+          "MMdd" => "dd\.MM",
+          "yyQ" => "Q\ yy",
+          "yyyyMM" => "MM\.yyyy",
+          "yyyyMMMM" => "MMMM\ y\ \'ж\'\."
+        };
+    sub _available_formats { return $_available_formats }
+}
+
+1;
+
+__END__
+
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+DateTime::Locale::kk
+
+=head1 SYNOPSIS
+
+  use DateTime;
+
+  my $dt = DateTime->now( locale => 'kk' );
+  print $dt->month_name();
+
+=head1 DESCRIPTION
+
+This is the DateTime locale package for Kazakh.
+
+=head1 DATA
+
+This locale inherits from the L<DateTime::Locale::root> locale.
+
+It contains the following data.
+
+=head2 Days
+
+=head3 Wide (format)
+
+  дуйсенбі
+  сейсенбі
+  сәренбі
+  бейсенбі
+  жұма
+  сенбі
+  жексені
+
+=head3 Abbreviated (format)
+
+  дс.
+  сс.
+  ср.
+  б�

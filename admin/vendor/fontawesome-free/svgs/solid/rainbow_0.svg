@@ -1,0 +1,26 @@
+stashes it in L</meta> and returns
+it as a hashref.  This is done so that the L<TAP::Parser::SourceHandler>s don't
+have to repeat common checks.  Currently this includes:
+
+    is_scalar => $bool,
+    is_hash   => $bool,
+    is_array  => $bool,
+
+    # for scalars:
+    length => $n
+    has_newlines => $bool
+
+    # only done if the scalar looks like a filename
+    is_file => $bool,
+    is_dir  => $bool,
+    is_symlink => $bool,
+    file => {
+        # only done if the scalar looks like a filename
+        basename => $string, # including ext
+        dir      => $string,
+        ext      => $string,
+        lc_ext   => $string,
+        # system checks
+        exists  => $bool,
+        stat    => [ ... ], # perldoc -f stat
+        em

@@ -1,0 +1,28 @@
+t_wide()
+
+Returns an array reference containing the wide format names of the
+days, with Monday as the first day.
+
+=item * $locale->day_format_abbreviated()
+
+Returns an array reference containing the abbreviated format names of
+the days, with Monday as the first day.
+
+=item * $locale->day_format_narrow()
+
+Returns an array reference containing the narrow format names of the
+days, with Monday as the first day.
+
+=item * $locale->day_stand_alone_wide()
+
+Returns an array reference containing the wide stand-alone names of
+the days, with Monday as the first day.
+
+=item * $locale->day_stand_alone_abbreviated()
+
+Returns an array reference containing the abbreviated stand-alone
+names of the days, with Monday as the first day.
+
+=item * $locale->day_stand_alone_narrow()
+
+Returns an array reference containing the narrow stand-alone names 

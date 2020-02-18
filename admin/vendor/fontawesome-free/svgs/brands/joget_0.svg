@@ -1,0 +1,46 @@
+pes correspond
+to mysql tables, with the corresponding adjustments made if
+the SQLite database is used.
+
+=head2 mods
+
+This table contains module information, and is created as
+
+  mod_id INTEGER NOT NULL PRIMARY KEY
+  mod_name VARCHAR(100) NOT NULL
+  dist_id INTEGER NOT NULL
+  mod_abs TEXT
+  mod_vers VARCHAR(10)
+  dslip VARCHAR(5)
+  chapterid INTEGER
+
+=over 3
+
+=item * mod_id
+
+This is the primary (unique) key of the table.
+
+=item * dist_id
+
+This key corresponds to the id of the associated distribution
+in the C<dists> table.
+
+=item * mod_name
+
+This is the module's name.
+
+=item * mod_abs
+
+This is a description, if available, of the module.
+
+=item * mod_vers
+
+This value, if present, gives the version of the module.
+
+=item * dslip
+
+This is a 5 character string expressing the dslip
+(development, support, language, interface, public
+license) information.
+
+=item * chapterid

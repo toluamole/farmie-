@@ -1,0 +1,59 @@
+lly.
+
+=item *
+
+C<skip_cleanup>
+
+If this option is true, CPAN::Mini will not try delete unmirrored files when it
+has finished mirroring
+
+=item *
+
+C<offline>
+
+If offline, CPAN::Mini will not attempt to contact remote resources.
+
+=item *
+
+C<no_conn_cache>
+
+If true, no connection cache will be established.  This is mostly useful as a
+workaround for connection cache failures.
+
+=back
+
+=head2 new
+
+  my $minicpan = CPAN::Mini->new;
+
+This method constructs a new CPAN::Mini object.  Its parameters are described
+above, under C<update_mirror>.
+
+=head2 mirror_indices
+
+  $minicpan->mirror_indices;
+
+This method updates the index files from the CPAN.
+
+=head2 mirror_file
+
+  $minicpan->mirror_file($path, $skip_if_present)
+
+This method will mirror the given file from the remote to the local mirror,
+overwriting any existing file unless C<$skip_if_present> is true.
+
+=head2 file_allowed
+
+  next unless $minicpan->file_allowed($filename);
+
+This method returns true if the given file is allowed to exist in the local
+mirror, even if it isn't one of the required mirror files.
+
+By default, only dot-files are allowed.  If the C<exact_mirror> option is true,
+all files are allowed.
+
+=head2 clean_unmirrored
+
+  $minicpan->clean_unmirrored;
+
+This method looks through the local mi

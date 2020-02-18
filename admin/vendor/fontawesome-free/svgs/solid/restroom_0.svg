@@ -1,0 +1,31 @@
+e_order};
+    my @parsers      = @{ $self->{parser_for} }{@$descriptions};
+
+    # Note:  Because of the way context works, we must assign the parsers to
+    # the @parsers array or else this method does not work as documented.
+    return @parsers;
+}
+
+sub _get_parsers {
+    my ( $self, @descriptions ) = @_;
+    my @parsers;
+    for my $description (@descriptions) {
+        $self->_croak("A parser for ($description) could not be found")
+          unless exists $self->{parser_for}{$description};
+        push @parsers => $self->{parser_for}{$description};
+    }
+    return wantarray ? @parsers : \@parsers;
+}
+
+=head3 C<descriptions>
+
+Get an array of descriptions in the order in which they were added to
+the aggregator.
+
+=cut
+
+sub descriptions { @{ shift->{parse_order} || [] } }
+
+=head3 C<start>
+
+Call C<

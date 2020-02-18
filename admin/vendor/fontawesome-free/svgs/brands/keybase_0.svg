@@ -1,0 +1,69 @@
+$seconds if $seconds;
+    $total *= -1 if $sign eq '-';
+
+    return $total;
+}
+
+sub offset_as_string {
+    {
+        local $@;
+        local $SIG{__DIE__};
+        shift if eval { $_[0]->isa('DateTime::TimeZone') };
+    }
+
+    my $offset = shift;
+
+    return undef unless defined $offset;
+    return undef unless $offset >= -359999 && $offset <= 359999;
+
+    my $sign = $offset < 0 ? '-' : '+';
+
+    $offset = abs($offset);
+
+    my $hours = int( $offset / 3600 );
+    $offset %= 3600;
+    my $mins = int( $offset / 60 );
+    $offset %= 60;
+    my $secs = int($offset);
+
+    return (
+        $secs
+        ? sprintf( '%s%02d%02d%02d', $sign, $hours, $mins, $secs )
+        : sprintf( '%s%02d%02d',     $sign, $hours, $mins )
+    );
+}
+
+# These methods all operate on data contained in the DateTime/TimeZone/Catalog.pm file.
+
+sub all_names {
+    return
+        wantarray
+        ? @DateTime::TimeZone::Catalog::ALL
+        : [@DateTime::TimeZone::Catalog::ALL];
+}
+
+sub categories {
+    return wantarray
+        ? @DateTime::TimeZone::Catalog::CATEGORY_NAMES
+        : [@DateTime::TimeZone::Catalog::CATEGORY_NAMES];
+}
+
+sub links {
+    return
+        wantarray
+        ? %DateTime::TimeZone::Catalog::LINKS
+        : {%DateTime::TimeZone::Catalog::LINKS};
+}
+
+sub names_in_category {
+    shift if $_[0]->isa('DateTime::TimeZone');
+    return unless exists $DateTime::TimeZone::Catalog::CATEGORIES{ $_[0] };
+
+    return wantarray
+        ? @{ $DateTime::TimeZone::Catalog::CATEGORIES{ $_[0] } }
+        : $DateTime::TimeZone::Catalog::CATEGORIES{ $_[0] };
+}
+
+sub countries {
+    wantarray
+        ? (

@@ -1,0 +1,112 @@
+      };
+    sub _available_formats { return $_available_formats }
+}
+
+1;
+
+__END__
+
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+DateTime::Locale::st
+
+=head1 SYNOPSIS
+
+  use DateTime;
+
+  my $dt = DateTime->now( locale => 'st' );
+  print $dt->month_name();
+
+=head1 DESCRIPTION
+
+This is the DateTime locale package for Southern Sotho.
+
+=head1 DATA
+
+This locale inherits from the L<DateTime::Locale::root> locale.
+
+It contains the following data.
+
+=head2 Days
+
+=head3 Wide (format)
+
+  Mmantaha
+  Labobedi
+  Laboraru
+  Labone
+  Labohlane
+  Moqebelo
+  Sontaha
+
+=head3 Abbreviated (format)
+
+  Mma
+  Bed
+  Rar
+  Ne
+  Hla
+  Moq
+  Son
+
+=head3 Narrow (format)
+
+  2
+  3
+  4
+  5
+  6
+  7
+  1
+
+=head3 Wide (stand-alone)
+
+  Mmantaha
+  Labobedi
+  Laboraru
+  Labone
+  Labohlane
+  Moqebelo
+  Sontaha
+
+=head3 Abbreviated (stand-alone)
+
+  Mma
+  Bed
+  Rar
+  Ne
+  Hla
+  Moq
+  Son
+
+=head3 Narrow (stand-alone)
+
+  2
+  3
+  4
+  5
+  6
+  7
+  1
+
+=head2 Months
+
+=head3 Wide (format)
+
+  Phesekgong
+  Hlakola
+  Hlakubele
+  Mmese
+  Motsheanong
+  Phupjane
+  Phupu
+  Phata
+  Leotshe
+  Mphalane
+  Pundungwane
+  Tshi

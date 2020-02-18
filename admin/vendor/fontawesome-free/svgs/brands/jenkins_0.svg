@@ -1,0 +1,164 @@
+>{$modname};
+    next unless ($values and $dist_ids->{$values->{dist_name}});
+    $sth->execute($dist_ids->{$values->{dist_name}}, $modname,
+                  $values->{mod_abs}, $values->{mod_vers},
+                  $values->{dslip}, $values->{chapterid})
+      or do {
+          $cdbi->db_error($sth);
+          $self->{error_msg} = $cdbi->{error_msg};
+          return;
+        };
+    $mod_ids->{$modname} = $dbh->func('last_insert_rowid') or do {
+      $cdbi->db_error($sth);
+      $self->{error_msg} = $cdbi->{error_msg};
+      return;
+    };
+  }
+  $sth->finish();
+  undef $sth;
+  $dbh->commit() or do {
+    $cdbi->db_error();
+    $self->{error_msg} = $cdbi->{error_msg};
+    return;
+  };
+  return 1;
+}
+
+sub update {
+  my $self = shift;
+  unless ($dbh) {
+    $self->{error_msg} = q{No db handle available};
+    return;
+  }
+  my $cdbi = $self->{cdbi};
+  my $data = $self->{update};
+  unless (has_hash_data($data)) {
+    $self->{info_msg} = q{No module data to update};
+    return;
+  }
+  return unless my $dist_obj = $self->{obj}->{dists};
+  my $dist_ids = $dist_obj->{ids};
+  my $mods = $self->{info};
+  unless ($dist_ids and $mods) {
+    $self->{error_msg} = q{No module index data available};
+    return;
+  }
+
+  my @fields = qw(dist_id mod_name mod_abs
+                  mod_vers dslip chapterid);
+
+  foreach my $modname (keys %$data) {
+    next unless $data->{$modname};
+    print_debug("Updating $modname\n");
+    my $sth = $cdbi->sth_update(\@fields, $data->{$modname});
+    my $values = $mods->{$modname};
+    next unless ($values and $dist_ids->{$values->{dist_name}});
+    $sth->execute($dist_ids->{$values->{dist_name}}, $modname,
+                  $values->{mod_abs}, $values->{mod_vers},
+                  $values->{dslip}, $values->{chapterid})
+      or do {
+        $cdbi->db_error($sth);
+        $self->{error_msg} = $cdbi->{error_msg};
+        return;
+      };
+    $sth->finish();
+    undef $sth;
+  }
+  $dbh->commit() or do {
+    $cdbi->db_error();
+    $self->{error_msg} = $cdbi->{error_msg};
+    return;
+  };
+  return 1;
+}
+
+sub delete {
+  my $self = shift;
+  unless ($dbh) {
+    $self->{error_msg} = q{No db handle available};
+        return;
+  }
+  return unless my $dist_obj = $self->{obj}->{dists};
+  my $cdbi = $self->{cdbi};
+  my $data = $dist_obj->{delete};
+  if (has_hash_data($data)) {
+    my $sth = $cdbi->sth_delete('dist_id');
+    foreach my $distname(keys %$data) {
+      $sth->execute($data->{$distname}) or do {
+        $cdbi->db_error($sth);
+        $self->{error_msg} = $cdbi->{error_msg};
+        return;
+      };
+    }
+    $sth->finish();
+    undef $sth;
+  }
+
+  $data = $self->{delete};
+  if (has_hash_data($data)) {
+    my $sth = $cdbi->sth_delete('mod_id');
+    foreach my $modname(keys %$data) {
+      $sth->execute($data->{$modname}) or do {
+        $cdbi->db_error($sth);
+        $self->{error_msg} = $cdbi->{error_msg};
+        return;
+      };
+      print_debug("Deleting $modname\n");
+    }
+    $sth->finish;
+    undef $sth;
+  }
+  $dbh->commit() or do {
+    $cdbi->db_error();
+    $self->{error_msg} = $cdbi->{error_msg};
+    return;
+  };
+  return 1;
+}
+
+package CPAN::SQLite::Populate::chaps;
+use base qw(CPAN::SQLite::Populate);
+use CPAN::SQLite::Util qw(has_hash_data print_debug);
+
+sub new {
+  my ($class, %args) = @_;
+  my $cdbi = $args{cdbi};
+  die "No dbi object available"
+    unless ($cdbi and ref($cdbi) eq 'CPAN::SQLite::DBI::Index::chaps');
+  my $self = {
+              obj => {},
+              cdbi => $cdbi,
+              error_msg => '',
+              info_msg => '',
+             };
+  return bless $self, $class;
+}
+
+sub insert {
+  my $self = shift;
+  unless ($dbh) {
+    $self->{error_msg} = q{No db handle available};
+    return;
+  }
+  return unless my $dist_obj = $self->{obj}->{dists};
+  my $cdbi = $self->{cdbi};
+  my $dist_insert = $dist_obj->{insert};
+  my $dists = $dist_obj->{info};
+  my $dist_ids = $dist_obj->{ids};
+  my $data = $setup ? $dists : $dist_insert;
+  unless (has_hash_data($data)) {
+    $self->{info_msg} = q{No chap data to insert};
+    return;
+  }
+  unless ($dists and $dist_ids) {
+    $self->{error_msg} = q{No chap index data available};
+    return;
+  }
+
+  my @fields = qw(chapterid dist_id subchapter);
+  my $sth = $cdbi->sth_insert(\@fields) or do {
+    $self->{error_msg} = $cdbi->{error_msg};
+    return;
+  };
+  foreach my $dist (keys %$data) {
+    

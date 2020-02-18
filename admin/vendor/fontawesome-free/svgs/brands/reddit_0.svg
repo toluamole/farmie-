@@ -1,0 +1,60 @@
+ "H時",
+          "HHmm" => "H\:mm",
+          "HHmmss" => "H\:mm\:ss",
+          "MEd" => "M\-d（E）",
+          "MMMMEd" => "MMMMd日\(E\)",
+          "MMdd" => "MM\/dd",
+          "Md" => "M\/d",
+          "yM" => "yyyy\/M",
+          "yMEd" => "yyyy\/M\/d（EEE）",
+          "yMMM" => "y年M月",
+          "yMMMEd" => "y年M月d日EEE",
+          "yMMMM" => "y年M月",
+          "yyMM" => "yyyy\/MM"
+        };
+    sub _available_formats { return $_available_formats }
+}
+
+1;
+
+__END__
+
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+DateTime::Locale::zh_Hant
+
+=head1 SYNOPSIS
+
+  use DateTime;
+
+  my $dt = DateTime->now( locale => 'zh_Hant' );
+  print $dt->month_name();
+
+=head1 DESCRIPTION
+
+This is the DateTime locale package for Chinese Traditional Han.
+
+=head1 DATA
+
+This locale inherits from the L<DateTime::Locale::zh> locale.
+
+It contains the following data.
+
+=head2 Days
+
+=head3 Wide (format)
+
+  星期一
+  星期二
+  星期三
+  星期四
+  星期五
+  星期六
+  星期日
+
+=he

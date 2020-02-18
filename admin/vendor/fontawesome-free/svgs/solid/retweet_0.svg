@@ -1,0 +1,50 @@
+
+sub has_problems {
+    my $self = shift;
+    return $self->todo_passed
+      || $self->has_errors;
+}
+
+##############################################################################
+
+=head3 C<has_errors>
+
+  if ( $parser->has_errors ) {
+      ...
+  }
+
+Returns true if I<any> of the parsers failed.  This includes:
+
+=over 4
+
+=item * Failed tests
+
+=item * Parse errors
+
+=item * Bad exit or wait status
+
+=back
+
+=cut
+
+sub has_errors {
+    my $self = shift;
+    return
+         $self->failed
+      || $self->parse_errors
+      || $self->exit
+      || $self->wait;
+}
+
+##############################################################################
+
+=head3 C<todo_failed>
+
+  # deprecated in favor of 'todo_passed'.  This method was horribly misnamed.
+
+This was a badly misnamed method.  It indicates which TODO tests unexpectedly
+succeeded.  Will now issue a warning and call C<todo_passed>.
+
+=cut
+
+sub t

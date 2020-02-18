@@ -1,0 +1,41 @@
+ => 5)),
+    ($self->{timeout} ? (timeout => $self->{timeout}) : ()),
+  );
+
+  unless ($self->{offline}) {
+    my $test_uri = URI->new_abs(
+      'modules/02packages.details.txt.gz',
+      $self->{remote},
+    )->as_string;
+
+    Carp::croak "unable to contact the remote mirror"
+      unless eval { $self->__lwp->head($test_uri)->is_success };
+  }
+
+  return $self;
+}
+
+sub __lwp { $_[0]->{__lwp} }
+
+
+sub _fixed_mirrors {
+  qw(
+    authors/01mailrc.txt.gz
+    modules/02packages.details.txt.gz
+    modules/03modlist.data.gz
+  );
+}
+
+sub _scratch_dir {
+  my ($self) = @_;
+
+  $self->{scratch} ||= File::Temp::tempdir(CLEANUP => 1);
+  return $self->{scratch};
+}
+
+sub mirror_indices {
+  my $self = shift;
+
+  $self->_make_index_dirs($self->_scratch_dir);
+
+  for 

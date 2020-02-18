@@ -1,0 +1,44 @@
+package DateTime::TimeZone;
+{
+  $DateTime::TimeZone::VERSION = '1.57';
+}
+
+use 5.006;
+
+use strict;
+use warnings;
+
+use DateTime::TimeZone::Catalog;
+use DateTime::TimeZone::Floating;
+use DateTime::TimeZone::Local;
+use DateTime::TimeZone::OffsetOnly;
+use DateTime::TimeZone::UTC;
+use Params::Validate 0.72 qw( validate validate_pos SCALAR ARRAYREF BOOLEAN );
+
+use constant INFINITY => 100**1000;
+use constant NEG_INFINITY => -1 * ( 100**1000 );
+
+# the offsets for each span element
+use constant UTC_START   => 0;
+use constant UTC_END     => 1;
+use constant LOCAL_START => 2;
+use constant LOCAL_END   => 3;
+use constant OFFSET      => 4;
+use constant IS_DST      => 5;
+use constant SHORT_NAME  => 6;
+
+my %SpecialName = map { $_ => 1 }
+    qw( EST MST HST CET EET MET WET EST5EDT CST6CDT MST7MDT PST8PDT );
+
+sub new {
+    my $class = shift;
+    my %p     = validate(
+        @_,
+        { name => { type => SCALAR } },
+    );
+
+    if ( exists $DateTime::TimeZone::Catalog::LINKS{ $p{name} } ) {
+        $p{name} = $DateTime::TimeZone::Catalog::LINKS{ $p{name} };
+    }
+    elsif ( exists $DateTime::TimeZone::Catalog::LINKS{ uc $p{name} } ) {
+        

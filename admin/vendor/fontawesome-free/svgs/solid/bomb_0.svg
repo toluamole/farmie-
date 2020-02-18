@@ -1,0 +1,22 @@
+      my $code_point = shift;
+
+        # Returns the name of a code point if algorithmically determinable;
+        # undef if not
+
+        # If in the Hangul range, calculate the name based on Unicode's
+        # algorithm
+        if ($code_point >= $SBase && $code_point <= $SBase + $SCount -1) {
+            use integer;
+            my $SIndex = $code_point - $SBase;
+            my $L = $LBase + $SIndex / $NCount;
+            my $V = $VBase + ($SIndex % $NCount) / $TCount;
+            my $T = $TBase + $SIndex % $TCount;
+            $name = "$HANGUL_SYLLABLE$Jamo{$L}$Jamo{$V}";
+            $name .= $Jamo{$T} if $T != $TBase;
+            return $name;
+        }
+
+        # Look through list of these code points for one in range.
+        foreach my $hash (@code_points_ending_in_code_point) {
+            return if $code_point < $hash->{'low'};
+            if ($code_point <= $hash->{'high'}) {

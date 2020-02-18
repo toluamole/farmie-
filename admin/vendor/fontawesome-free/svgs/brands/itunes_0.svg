@@ -1,0 +1,38 @@
+# $Id: Populate.pm 35 2011-06-17 01:34:42Z stro $
+
+package CPAN::SQLite::Populate;
+use strict;
+use warnings;
+no warnings qw(redefine);
+use CPAN::SQLite::Util qw($table_id has_hash_data print_debug);
+use CPAN::SQLite::DBI::Index;
+use CPAN::SQLite::DBI qw($dbh);
+use File::Find;
+use File::Basename;
+use File::Spec::Functions;
+use File::Path;
+
+our $dbh = $CPAN::SQLite::DBI::dbh;
+my ($setup);
+our $VERSION = '0.202';
+
+my %tbl2obj;
+$tbl2obj{$_} = __PACKAGE__ . '::' . $_ 
+    for (qw(dists mods auths chaps));
+my %obj2tbl  = reverse %tbl2obj;
+
+sub new {
+  my ($class, %args) = @_;
+
+  $setup = $args{setup};
+
+  my $index = $args{index};
+  my @tables = qw(dists mods auths);
+  foreach my $table (@tables) {
+    my $obj = $index->{$table};
+    die "Please supply a CPAN::SQLite::Index::$table object"
+      unless ($obj and ref($obj) eq "CPAN::SQLite::Index::$table");
+  }
+  my $state = $args{state};
+  unless ($setup) {
+    die "Please supply a CPAN::SQLite:
